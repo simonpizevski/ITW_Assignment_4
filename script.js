@@ -1,78 +1,62 @@
 //JS variables
+let arrayTodo = [];
 let completedCount = 0;
-const todoArray = [];
 
-//HTML element variables
-const input = document.querySelector("#todoInput");
-const list = document.querySelector("ul");
-const button = document.querySelector("#btnAddTodo");
-const info = document.querySelector("small");
-const completedInfo = document.querySelector("#completedCount");
+//HTML variables
+const input = document.getElementById("input");
+const listTasks = document.getElementById("listTasks");
+const alertInput = document.querySelector("small");
+const completeInfo = document.querySelector("p");
 
-//function to handle change status on object in array
-//takes parameter completed(boolean)
-button.addEventListener("click", function () {
-  //get value from input
-  const text = input.value;
-
-  //check that text is not empty
-  if (text.length == 0) {
-    info.innerText = "Input must not be empty";
-    return;
+function addTask() {
+  if (input.value === "") {
+    alertInput.innerText = "Input must not be empty";
   } else {
-    info.innerText = "";
+    alertInput.innerText = "";
+    arrayTodo.push(input.value);
+
+    let item = document.createElement("li");
+    listTasks.appendChild(item);
+
+    let itemLabel = document.createElement("span");
+    itemLabel.id = "task";
+    itemLabel.innerText = input.value;
+    item.appendChild(itemLabel);
+
+    let trashcan = document.createElement("span");
+    trashcan.innerHTML = "&#x1F5D1";
+    trashcan.id = "trash";
+    item.appendChild(trashcan);
   }
+}
 
-  //add todo to todoArray
-  //const todoObject = {name: text, status: false};
-  todoArray.push(text);
-
-  //create li-element in ul
-  const item = document.createElement("li");
-  list.appendChild(item);
-
-  //create a span-element in out new li and add text
-  const itemLabel = document.createElement("span");
-  itemLabel.innerText = text;
-  item.appendChild(itemLabel);
-
-  //create  a span-element that has a trashcan
-  const trashcan = document.createElement("span");
-  trashcan.innerHTML = "&#x1F5D1";
-  trashcan.setAttribute("class", "trashcan");
-  item.appendChild(trashcan);
-
-  //add a listener to the span(li element)
-  itemLabel.addEventListener("click", function () {
-    //toggle completed/uncompleted
-    if (item.getAttribute("class") == "completed") {
-      item.setAttribute("class", "");
-      completedCount--;
-    } else {
-      item.setAttribute("class", "completed");
-      completedCount++;
-      completedInfo.innerText = `${completedCount} completed`;
-
-    }
-  });
-
-  //add a listener to the trashcan
-  trashcan.addEventListener("click", function () {
-    if (item.getAttribute("class") == "completed") {
-      completedCount--;
-    }
-
-    completedInfo.innerText = `${completedCount} completed`;
-    //remove li-element
-    item.remove();
-  });
-
-  //set empty input field after adding to list
-  input.value = "";
+listTasks.addEventListener("click", function (e) {
+  if (e.target.classList.contains("completed")) {
+    console.log("item");
+    e.target.classList.remove("completed");
+    completedCount--;
+  } else {
+    e.target.classList.add("completed");
+    completedCount++;
+  }
+  completeInfo.innerText = `${completedCount} completed`;
 });
 
+listTasks.addEventListener("click", function (e) {
+  if (e.target.id === "trash") {
+    console.log("trash");
+    e.target.parentElement.remove();
+    let indexToRemove = arrayTodo.indexOf(input.value);
+    arrayTodo.splice(indexToRemove, 1);
+    console.log(arrayTodo);
+    completeInfo.innerText = `${completedCount} completed`;
+    if (e.target.parentElement.classList.contains("completed")) {
+      completedCount--;
+    }
+  }
+});
 
-//function addTodo
-
-//function deleteTodo
-
+let trashcan = document.createElement("span");
+trashcan.id = "trash";
+trashcan.innerHTML = "&#x1F5D1";
+item.appendChild(trashcan);

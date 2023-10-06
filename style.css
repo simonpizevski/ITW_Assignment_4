@@ -12,21 +12,17 @@ h1 {
   color: blue;
 }
 
-#buttonAddTodo {
-  color: red;
-}
-
-.completed {
-  color: #888;
-  text-decoration: line-through;
-}
-
-small {
-  color: red;
-  font-size: 24;
-}
-
-.trashcan {
-  margin-left: 15px;
+ul li {
   cursor: pointer;
+  user-select: none;
+
 }
+
+ul li span#task.completed {
+color: grey;
+text-decoration: line-through;
+}
+
+ul li span#trash {
+}
+
